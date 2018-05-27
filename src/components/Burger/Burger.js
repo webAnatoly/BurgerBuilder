@@ -17,7 +17,7 @@ const burger = (props) => {
     .reduce((accumArr, el) => accumArr.concat(el), []); // делаем массив одномерным
 
   if (arrayIngredients.length === 0) {
-    arrayIngredients = <p>Please start adding ingredients</p>;
+    arrayIngredients = <p>Пожалуйста начните добавлять ингредиенты</p>;
   }
 
   return (
