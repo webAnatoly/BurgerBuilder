@@ -16,14 +16,19 @@ const withErrorHandler = (WrappedComponent, axiosOrders, className) => (
       we're not causing side effects here.
       We're just registering the interceptors and
       we want to do that before the child components are rendered. */
-      axiosOrders.interceptors.request.use((req) => {
+      this.requestInterceptorId = axiosOrders.interceptors.request.use((req) => {
         this.setState({ error: null });
         return req;
       });
-      axiosOrders.interceptors.response.use(res => res, (err) => {
+      this.responseInterceptorId = axiosOrders.interceptors.response.use(res => res, (err) => {
         this.setState({ error: err });
         return Promise.reject(err);
       });
+    }
+    componentWillUnmount() {
+      // removing interceptors
+      axiosOrders.interceptors.request.eject(this.requestInterceptorId);
+      axiosOrders.interceptors.response.eject(this.responseInterceptorId);
     }
     errorConfirmedHandler = () => {
       this.setState({ error: null });
