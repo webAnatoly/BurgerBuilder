@@ -14,7 +14,8 @@ class Modal extends React.Component {
 
   shouldComponentUpdate(nextProps) {
     // Рендерим компонент только тогда, когда его нужно показать пользователю
-    return nextProps.show !== this.props.show;
+    return (nextProps.show !== this.props.show) ||
+      (nextProps.showSpinner !== this.props.showSpinner);
   }
 
   componentDidUpdate() {
@@ -58,12 +59,14 @@ class Modal extends React.Component {
 Modal.propTypes = {
   children: PropTypes.node,
   show: PropTypes.bool,
+  showSpinner: PropTypes.bool,
   modalClosed: PropTypes.func,
 };
 
 Modal.defaultProps = {
   children: null,
   show: false,
+  showSpinner: false,
   modalClosed: () => false,
 };
 
