@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Aux from '../../hoc/Aux/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
@@ -85,30 +86,43 @@ class BurgerBuilder extends React.Component {
   }
 
   purchaseContinueHandler = () => {
-    // alert('You continue!');
-    this.setState({ loading: true }); // активизируем показ спиннера
-    const order = {
-      ingediets: this.state.ingredients,
-      price: this.state.totalPrice, // в реальном приложении цену надо считать на сервере
-      customer: {
-        name: 'Anatoly',
-        address: {
-          street: 'TestStree 14',
-          zipCode: '12341234',
-          country: 'Russian',
-        },
-        email: 'mail@mail.com',
-      },
-      deliveryMethod: 'fastest',
-    };
-    axiosOrders.post('/orders.json', order)
-      .then(() => {
-        // перестаём показывать спиннер и закрываем модальное окно
-        this.setState({ loading: false, purchasing: false });
-      })
-      .catch(() => {
-        this.setState({ loading: false, purchasing: false });
-      });
+    // this.setState({ loading: true }); // активизируем показ спиннера
+    // const order = {
+    //   ingediets: this.state.ingredients,
+    //   price: this.state.totalPrice, // в реальном приложении цену надо считать на сервере
+    //   customer: {
+    //     name: 'Anatoly',
+    //     address: {
+    //       street: 'TestStree 14',
+    //       zipCode: '12341234',
+    //       country: 'Russian',
+    //     },
+    //     email: 'mail@mail.com',
+    //   },
+    //   deliveryMethod: 'fastest',
+    // };
+    // axiosOrders.post('/orders.json', order)
+    //   .then(() => {
+    //     // перестаём показывать спиннер и закрываем модальное окно
+    //     this.setState({ loading: false, purchasing: false });
+    //   })
+    //   .catch(() => {
+    //     this.setState({ loading: false, purchasing: false });
+    //   });
+
+    /* Помещаем наши игридиенты в query параметры для URL.
+    the query string of URL будем парсить в компоненте Checkout. */
+    const queryParams = [];
+    const ingredientPairs = Object.entries(this.state.ingredients);
+    for (let i = 0; i < ingredientPairs.length; i += 1) {
+      queryParams.push(`${encodeURIComponent(ingredientPairs[i][0])}=${encodeURIComponent(ingredientPairs[i][1])}`);
+    }
+
+    // перенаправляет на "страницу" Checkout
+    this.props.history.push({
+      pathname: '/checkout',
+      search: `?${queryParams.join('&')}`, // тут query string которую мы сформировали на основе this.state.ingredients
+    });
   }
 
   render() {
@@ -162,5 +176,13 @@ class BurgerBuilder extends React.Component {
     );
   }
 }
+
+BurgerBuilder.propTypes = {
+  history: PropTypes.oneOfType([PropTypes.object]).isRequired,
+};
+
+// BurgerBuilder.defaultProps = {
+
+// };
 
 export default withErrorHandler(BurgerBuilder, axiosOrders);

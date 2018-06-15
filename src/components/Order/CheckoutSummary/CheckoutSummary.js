@@ -4,31 +4,41 @@ import Burger from '../../Burger/Burger';
 import Button from '../../UI/Button/Button';
 import s from './CheckoutSummary.css';
 
-const CheckoutSummary = props => (
-  <div className={s.CheckoutSummary}>
-    <h1>Приятного аппетита!</h1>
-    <div style={{ width: '100%', margin: 'auto' }}>
-      <Burger ingredients={props.ingredients} />
+const CheckoutSummary = (props) => {
+  let h1 = 'Выглядит аппетитно!';
+  let isEmpty = false;
+  if (Object.keys(props.ingredients).length === 0) {
+    h1 = 'Пустой бутерброд';
+    isEmpty = true;
+  }
+  return (
+    <div className={s.CheckoutSummary}>
+      <h1>{h1}</h1>
+      <div style={{ width: '100%', margin: 'auto' }}>
+        <Burger ingredients={props.ingredients} checkoutHaveIngredients={isEmpty} />
+      </div>
+      <Button
+        btnType="Danger"
+        clicked={props.checkoutCancelled}
+      >
+        ОТМЕНИТЬ
+      </Button>
+      <Button
+        btnType="Success"
+        clicked={props.checkoutContinued}
+      >
+        ПРОДОЛЖИТЬ
+      </Button>
     </div>
-    <Button
-      btnType="Danger"
-      clicked={() => 'Empty function. Just placeholder. Replace this function with normal function'}
-    >
-      ОТМЕНИТЬ
-    </Button>
-    <Button
-      btnType="Success"
-      clicked={() => 'Empty function. Just placeholder. Replace this function with normal function'}
-    >
-      ПРОДОЛЖИТЬ
-    </Button>
-  </div>
-);
+  );
+};
 
 CheckoutSummary.propTypes = {
   ingredients: PropTypes.oneOfType([
     PropTypes.object,
   ]),
+  checkoutCancelled: PropTypes.func.isRequired,
+  checkoutContinued: PropTypes.func.isRequired,
 };
 
 CheckoutSummary.defaultProps = {
