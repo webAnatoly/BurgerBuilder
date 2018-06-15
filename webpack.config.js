@@ -6,6 +6,7 @@ module.exports = {
   output: {
     filename: 'browser-bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/', // добавил, что-бы избежать ошибки при перезагрузке страницы при работе с реакт-роутером по адресу http://localhost:8080/checkout/contact-data
   },
   module: {
     rules: [
