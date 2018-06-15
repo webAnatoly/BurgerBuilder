@@ -1,5 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
+import Button from '../../../components/UI/Button/Button';
+import s from './ContactData.css';
 
 class ContactData extends React.Component {
   constructor(props) {
@@ -15,13 +17,14 @@ class ContactData extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className={s.ContactData}>
         <h4>Введите Ваши контактные данные</h4>
         <form>
-          <input type="text" name="name" placeholder="Имя" />
-          <input type="email" name="email" placeholder="email" />
-          <input type="text" name="street" placeholder="Улица" />
-          <input type="text" name="postal" placeholder="Почтовый индекс" />
+          <input className={s.Input} type="text" name="name" placeholder="Имя" />
+          <input className={s.Input} type="email" name="email" placeholder="Емейл" />
+          <input className={s.Input} type="text" name="street" placeholder="Улица" />
+          <input className={s.Input} type="text" name="postal" placeholder="Почтовый индекс" />
+          <Button btnType="Success">ЗАКАЗАТЬ</Button>
         </form>
       </div>
     );
