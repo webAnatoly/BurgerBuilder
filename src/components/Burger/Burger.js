@@ -5,7 +5,6 @@ import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 import getRandomUniqueKey from '../../myLib/getUniqueRandomNumber';
 
 const burger = (props) => {
-  console.log(props);
   let arrayIngredients = Object.keys(props.ingredients)
     .map((ingred) => {
       const amount = props.ingredients[ingred];

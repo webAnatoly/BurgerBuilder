@@ -9,23 +9,29 @@ class Checkout extends React.Component {
     super(props);
     this.state = {
       ingredients: {},
+      totalPrice: 0,
     };
   }
-  componentDidMount() {
+  componentWillMount() {
     /* Парсим the query string of a URL.
     Query string мы сформировали в компоненте BurgerBuilder и благодаря реакт-роутеру,
     имеем доступ к этой строке в этом компоненте, через this.props.location.search */
     const query = new URLSearchParams(this.props.location.search);
     const ingredientsFromQueryString = {}; // сюда складываем распарсенные ингредиенты
+    let price = 0;
     query.forEach((howMuch, ingredientName) => {
-      ingredientsFromQueryString[ingredientName] = howMuch;
+      if (ingredientName === 'price') { // кроме ингридиентов из компонента BurgerBuleder так же передаём цену бутерброда
+        price = howMuch;
+      } else {
+        ingredientsFromQueryString[ingredientName] = howMuch;
+      }
     });
     if (Object.keys(ingredientsFromQueryString).length > 0) { // проверка на пустоту объекта
-      this.updateIngredients(ingredientsFromQueryString);
+      this.updateIngredients(ingredientsFromQueryString, price);
     }
   }
-  updateIngredients(ingredientsFromDidMount) {
-    this.setState({ ingredients: ingredientsFromDidMount });
+  updateIngredients(ingredientsFromDidMount, price) {
+    this.setState({ ingredients: ingredientsFromDidMount, totalPrice: price });
   }
   checkoutCancelledHandler = () => {
     /* Так как этот компонент загружается через Route компонент, то в пропсы попадают
@@ -44,7 +50,16 @@ class Checkout extends React.Component {
           checkoutCancelled={this.checkoutCancelledHandler}
           checkoutContinued={this.checkoutContinuedHandler}
         />
-        <Route path={`${this.props.match.path}/contact-data`} component={ContactData} />
+        <Route
+          path={`${this.props.match.path}/contact-data`}
+          render={props => (
+            <ContactData
+              ingredients={this.state.ingredients}
+              price={parseInt(this.state.totalPrice, 10)}
+              {...props} // прокидываем нативные свойства роутера такие как history, match, location
+            />
+          )}
+        />
       </div>
     );
   }
@@ -53,6 +68,7 @@ class Checkout extends React.Component {
 
 Checkout.propTypes = {
   history: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  match: PropTypes.oneOfType([PropTypes.object]).isRequired,
   location: PropTypes.oneOfType([PropTypes.object]),
 };
 
