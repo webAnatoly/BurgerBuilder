@@ -5,8 +5,12 @@ import s from './NavigationItem.css';
 
 const NavigationItem = props => (
   <li className={s.NavigationItem}>
+    {/* Если exact = true значит ссылка активна.
+    When true, the active class/style will only be applied if the location is matched exactly. */}
     <NavLink
       to={props.link}
+      activeClassName={s.active}
+      exact={props.exact}
     >
       {props.children}
     </NavLink>
@@ -16,13 +20,13 @@ const NavigationItem = props => (
 NavigationItem.propTypes = {
   children: PropTypes.node,
   link: PropTypes.string,
-  active: PropTypes.bool,
+  exact: PropTypes.bool,
 };
 
 NavigationItem.defaultProps = {
   children: null,
   link: '/',
-  active: false,
+  exact: false,
 };
 
 export default NavigationItem;
