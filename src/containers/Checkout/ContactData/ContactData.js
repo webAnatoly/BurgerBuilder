@@ -23,7 +23,7 @@ class ContactData extends React.Component {
 
     this.setState({ loading: true }); // активизируем показ спиннера
     const order = {
-      ingediets: this.props.ingredients,
+      ingrediets: this.props.ingredients,
       price: this.props.price, // в реальном приложении цену надо считать на сервере
       customer: {
         name: 'Anatoly',
