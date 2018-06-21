@@ -95,7 +95,11 @@ class ContactData extends React.Component {
         {/* Создаём инпуты на основе массива объектов-шаблонов */}
         {formElementsArray.map(formElement => (
           <Input
-            key={randomKey()}
+            /* Изначально в качестве key у меня было рандомное значение key={randomKey()},
+            но это приводило к тому что при ререндинге терялся фокус в input'e.
+            Чтобы этого избежать, нужно в качестве key выбирать какое-то постоянное значение,
+            которое не меняется при перерендинге. */
+            key={formElement.id}
             inputType={formElement.elementType}
             elementConfig={formElement.elementConfig}
             value={formElement.value}

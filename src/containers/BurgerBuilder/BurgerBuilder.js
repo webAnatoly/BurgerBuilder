@@ -86,8 +86,6 @@ class BurgerBuilder extends React.Component {
   }
 
   purchaseContinueHandler = () => {
-
-
     /* Помещаем наши игридиенты в query параметры для URL.
     the query string of URL будем парсить в компоненте Checkout. */
     const queryParams = [];
