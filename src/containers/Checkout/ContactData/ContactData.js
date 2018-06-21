@@ -67,16 +67,18 @@ class ContactData extends React.Component {
       });
   }
   inputChangedHandler = (event, inputIdentifier) => {
-    // копируем orderForm
+    // копируем в новый объект orderForm
     const updatedOrderForm = {
       ...this.state.orderForm,
     };
-
+    // копируем в новый объект состояния для текущего инпута
     const updatedFormElement = {
       ...updatedOrderForm[inputIdentifier],
     };
+    // обновляем value для текущего инпута
     updatedFormElement.value = event.target.value;
     updatedOrderForm[inputIdentifier] = updatedFormElement;
+    // обновляем state
     this.setState({ orderForm: updatedOrderForm });
   }
   render() {
