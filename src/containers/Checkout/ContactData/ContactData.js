@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axiosOrders from '../../../axios-orders';
-import randomKey from '../../../myLib/getUniqueRandomNumber';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
@@ -43,7 +42,6 @@ class ContactData extends React.Component {
         },
       },
       loading: false,
-      testValue: 'initialTestValue',
     };
   }
 
