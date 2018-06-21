@@ -39,6 +39,7 @@ class ContactData extends React.Component {
             ],
           },
           value: '',
+          defaultValueForSelect: 'normal',
         },
       },
       loading: false,
@@ -101,6 +102,7 @@ class ContactData extends React.Component {
             inputType={formElement.elementType}
             elementConfig={formElement.elementConfig}
             value={formElement.value}
+            defaultValueForSelect={formElement.defaultValueForSelect}
             id={formElement.id}
             changed={event => this.inputChangedHandler(event, formElement.id)}
           />))}

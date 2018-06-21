@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import randomKey from '../../../myLib/getUniqueRandomNumber';
 import s from './Input.css';
 
 const Input = (props) => {
@@ -8,7 +7,6 @@ const Input = (props) => {
 
   /* В этом компоненте в пропсах получаем объект,
   на основе которого конфигурируем и рендерим необходимый инпут елемент */
-
   switch (props.inputType) {
     case ('input'):
       inputElement = (<input
@@ -33,11 +31,11 @@ const Input = (props) => {
         <select
           id={props.id}
           className={s.InputElement}
-          defaultValue={props.elementConfig.options[0].value}
+          defaultValue={props.defaultValueForSelect}
           onChange={props.changed}
         >
           {props.elementConfig.options.map(option => (
-            <option value={option.value} key={randomKey()}>
+            <option value={option.value} key={option.value}>
               {option.displayValue}
             </option>
           ))}
@@ -63,6 +61,7 @@ Input.propTypes = {
   elementConfig: PropTypes.oneOfType([PropTypes.object]).isRequired,
   id: PropTypes.string.isRequired,
   value: PropTypes.string,
+  defaultValueForSelect: PropTypes.string,
   label: PropTypes.string,
   changed: PropTypes.func,
 };
@@ -70,6 +69,7 @@ Input.propTypes = {
 Input.defaultProps = {
   label: '',
   value: '',
+  defaultValueForSelect: '',
   changed: () => null,
 };
 
