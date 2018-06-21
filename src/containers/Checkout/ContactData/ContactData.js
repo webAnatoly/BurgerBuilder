@@ -1,40 +1,59 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axiosOrders from '../../../axios-orders';
+import randomKey from '../../../myLib/getUniqueRandomNumber';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import Input from '../../../components/UI/Input/Input';
 import s from './ContactData.css';
+
+const createInputTemplate = (elementType, type, placeholder, value) => {
+  /* Функция создает и возвращает объект,
+  который будет использоваться в качестве шаблона для создания инпутов в форме */
+  const result = {
+    elementType: elementType || 'input',
+    elementConfig: {
+      type: type || 'text',
+      placeholder: placeholder || '',
+    },
+    value: value || '',
+  };
+  return result;
+};
 
 class ContactData extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      email: '',
-      address: {
-        street: '',
-        postalCode: '',
+      orderForm: {
+        name: createInputTemplate('input', 'text', 'Ваше имя', ''),
+        street: createInputTemplate('input', 'text', 'Адрес', ''),
+        zipCode: createInputTemplate('input', 'text', 'Почтовый индекс', ''),
+        country: createInputTemplate('input', 'text', 'Страна', ''),
+        email: createInputTemplate('input', 'email', 'Ваш емейл', ''),
+        deliveryMethod: {
+          elementType: 'select',
+          elementConfig: {
+            options: [
+              { value: 'fastest', displayValue: 'Экспресс доставка' },
+              { value: 'normal', displayValue: 'Обычная доставка' },
+            ],
+          },
+          value: '',
+        },
       },
       loading: false,
+      testValue: 'initialTestValue',
     };
   }
+
   orderHandler = (event) => {
     event.preventDefault(); // предотвращаем перезагрузку страницы при нажатии кнопки в форме
 
     this.setState({ loading: true }); // активизируем показ спиннера
     const order = {
-      ingrediets: this.props.ingredients,
+      ingredients: this.props.ingredients,
       price: this.props.price, // в реальном приложении цену надо считать на сервере
-      customer: {
-        name: 'Anatoly',
-        address: {
-          street: 'TestStree 14',
-          zipCode: '12341234',
-          country: 'Russian',
-        },
-        email: 'mail@mail.com',
-      },
-      deliveryMethod: 'fastest',
     };
     axiosOrders.post('/orders.json', order)
       .then(() => {
@@ -48,13 +67,41 @@ class ContactData extends React.Component {
         this.setState({ loading: false });
       });
   }
+  inputChangedHandler = (event, inputIdentifier) => {
+    // копируем orderForm
+    const updatedOrderForm = {
+      ...this.state.orderForm,
+    };
+
+    const updatedFormElement = {
+      ...updatedOrderForm[inputIdentifier],
+    };
+    updatedFormElement.value = event.target.value;
+    updatedOrderForm[inputIdentifier] = updatedFormElement;
+    this.setState({ orderForm: updatedOrderForm });
+  }
   render() {
+    const formElementsArray = [];
+    // Заполняем массив объектами-шаблонами на основе которых будут созданы инпуты в форме
+    Object.entries(this.state.orderForm).forEach((elem) => {
+      formElementsArray.push({
+        id: elem[0],
+        ...elem[1],
+      });
+    });
+
     let form = (
-      <form>
-        <input className={s.Input} type="text" name="name" placeholder="Имя" />
-        <input className={s.Input} type="email" name="email" placeholder="Емейл" />
-        <input className={s.Input} type="text" name="street" placeholder="Улица" />
-        <input className={s.Input} type="text" name="postal" placeholder="Почтовый индекс" />
+      <form onSubmit={e => e.preventDefault()}>
+        {/* Создаём инпуты на основе массива объектов-шаблонов */}
+        {formElementsArray.map(formElement => (
+          <Input
+            key={randomKey()}
+            inputType={formElement.elementType}
+            elementConfig={formElement.elementConfig}
+            value={formElement.value}
+            id={formElement.id}
+            changed={event => this.inputChangedHandler(event, formElement.id)}
+          />))}
         <Button btnType="Success" clicked={this.orderHandler}>ЗАКАЗАТЬ</Button>
       </form>
     );
