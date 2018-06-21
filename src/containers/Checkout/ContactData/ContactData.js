@@ -8,7 +8,7 @@ import s from './ContactData.css';
 
 const createInputTemplate = (elementType, type, placeholder) => {
   /* Функция создает и возвращает объект,
-  который будет использоваться в качестве шаблона для создания инпутов в форме */
+  который будет использоваться в качестве шаблона для создания разных инпутов в форме */
   const result = {
     elementType: elementType || 'input',
     elementConfig: {
@@ -40,6 +40,9 @@ class ContactData extends React.Component {
           value: '',
           defaultValueForSelect: 'normal',
         },
+        /* Tеперь, при необходимости, можно будет легко добавлять дополнительные поля в форму
+        просто добавив новое поле с конфигурацией. Например вот так:
+        name2: { ...createInputTemplate('input', 'text', 'Ваше имя2'), value: '' }, */
       },
       loading: false,
     };
@@ -49,10 +52,16 @@ class ContactData extends React.Component {
     event.preventDefault(); // предотвращаем перезагрузку страницы при нажатии кнопки в форме
 
     this.setState({ loading: true }); // активизируем показ спиннера
+
+    // формируем данные для отправки на сервер
     const formData = {};
+    Object.entries(this.state.orderForm).forEach((formElementIdentifier) => {
+      formData[formElementIdentifier[0]] = formElementIdentifier[1].value;
+    });
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price, // в реальном приложении цену надо считать на сервере
+      orderData: formData,
     };
     axiosOrders.post('/orders.json', order)
       .then(() => {
