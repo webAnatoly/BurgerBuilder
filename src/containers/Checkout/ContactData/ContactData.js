@@ -6,7 +6,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import s from './ContactData.css';
 
-const createInputTemplate = (elementType, type, placeholder, value) => {
+const createInputTemplate = (elementType, type, placeholder) => {
   /* Функция создает и возвращает объект,
   который будет использоваться в качестве шаблона для создания инпутов в форме */
   const result = {
@@ -15,7 +15,6 @@ const createInputTemplate = (elementType, type, placeholder, value) => {
       type: type || 'text',
       placeholder: placeholder || '',
     },
-    value: value || '',
   };
   return result;
 };
@@ -25,11 +24,11 @@ class ContactData extends React.Component {
     super(props);
     this.state = {
       orderForm: {
-        name: createInputTemplate('input', 'text', 'Ваше имя', ''),
-        street: createInputTemplate('input', 'text', 'Адрес', ''),
-        zipCode: createInputTemplate('input', 'text', 'Почтовый индекс', ''),
-        country: createInputTemplate('input', 'text', 'Страна', ''),
-        email: createInputTemplate('input', 'email', 'Ваш емейл', ''),
+        name: { ...createInputTemplate('input', 'text', 'Ваше имя'), value: '' },
+        street: { ...createInputTemplate('input', 'text', 'Адрес'), value: '' },
+        zipCode: { ...createInputTemplate('input', 'text', 'Почтовый индекс'), value: '' },
+        country: { ...createInputTemplate('input', 'text', 'Страна'), value: '' },
+        email: { ...createInputTemplate('input', 'email', 'Ваш емейл'), value: '' },
         deliveryMethod: {
           elementType: 'select',
           elementConfig: {
@@ -50,6 +49,7 @@ class ContactData extends React.Component {
     event.preventDefault(); // предотвращаем перезагрузку страницы при нажатии кнопки в форме
 
     this.setState({ loading: true }); // активизируем показ спиннера
+    const formData = {};
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price, // в реальном приложении цену надо считать на сервере
@@ -92,7 +92,7 @@ class ContactData extends React.Component {
     });
 
     let form = (
-      <form onSubmit={e => e.preventDefault()}>
+      <form onSubmit={this.orderHandler}>
         {/* Создаём инпуты на основе массива объектов-шаблонов */}
         {formElementsArray.map(formElement => (
           <Input
@@ -108,7 +108,7 @@ class ContactData extends React.Component {
             id={formElement.id}
             changed={event => this.inputChangedHandler(event, formElement.id)}
           />))}
-        <Button btnType="Success" clicked={this.orderHandler}>ЗАКАЗАТЬ</Button>
+        <Button btnType="Success">ЗАКАЗАТЬ</Button>
       </form>
     );
     if (this.state.loading) {
