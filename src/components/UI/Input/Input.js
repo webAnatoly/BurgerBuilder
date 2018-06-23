@@ -4,6 +4,15 @@ import s from './Input.css';
 
 const Input = (props) => {
   let inputElement = null;
+  const inputClasses = [s.InputElement];
+
+  if (props.invalid && props.shouldValidate && props.touched) {
+    /* Если в инпут введено валидное значение, то в props.invalid должно передаваться true.
+    Валидация реализовывается в вышестоящих Class Components,
+    а сюда передается true или false в свойстве props.invalid
+    */
+    inputClasses.push(s.Invalid);
+  }
 
   /* В этом компоненте в пропсах получаем объект,
   на основе которого конфигурируем и рендерим необходимый инпут елемент */
@@ -12,7 +21,7 @@ const Input = (props) => {
       inputElement = (<input
         {...props.elementConfig} // type, placeholder
         id={props.id}
-        className={s.InputElement}
+        className={inputClasses.join(' ')}
         onChange={props.changed}
         value={props.value}
       />);
@@ -64,6 +73,9 @@ Input.propTypes = {
   defaultValueForSelect: PropTypes.string,
   label: PropTypes.string,
   changed: PropTypes.func,
+  invalid: PropTypes.bool.isRequired, // флаг говорящий о том валидный или не валидный был ввод.
+  shouldValidate: PropTypes.bool.isRequired, // флаг определяющий нужно ли валидировать инпут.
+  touched: PropTypes.bool.isRequired, // флаг определяющий был ли ввод в инпут.
 };
 
 Input.defaultProps = {
