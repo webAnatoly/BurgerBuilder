@@ -48,19 +48,10 @@ class BurgerBuilder extends React.Component {
   }
 
   purchaseContinueHandler = () => {
-    /* Помещаем наши игридиенты в query параметры для URL.
-    the query string of URL будем парсить в компоненте Checkout. */
-    const queryParams = [];
-    const ingredientPairs = Object.entries(this.props.ings);
-    for (let i = 0; i < ingredientPairs.length; i += 1) {
-      queryParams.push(`${encodeURIComponent(ingredientPairs[i][0])}=${encodeURIComponent(ingredientPairs[i][1])}`);
-    }
-    queryParams.push(`price=${this.props.totalPrice}`);// передаём totalPice посредством query в компонент Checkout
-    // перенаправляет на "страницу" Checkout
-    this.props.history.push({
-      pathname: '/checkout',
-      search: `?${queryParams.join('&')}`, // тут query string которую мы сформировали на основе this.state.ingredients
-    });
+    /* Теперь, когда использую Redux можно получать список ингредиентов из глобального store
+    и соответственно отпала необходимость передавать список ингредиентов в строке URL.
+    */
+    this.props.history.push('/checkout');
   }
 
   render() {

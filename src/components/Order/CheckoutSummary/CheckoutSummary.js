@@ -5,7 +5,7 @@ import Button from '../../UI/Button/Button';
 import s from './CheckoutSummary.css';
 
 const CheckoutSummary = (props) => {
-  let h1 = 'Выглядит аппетитно!';
+  let h1 = 'Надеемся вам понравится!';
   let isEmpty = false;
   if (Object.keys(props.ingredients).length === 0) {
     h1 = 'Пустой бутерброд';

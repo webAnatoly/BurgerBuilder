@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import axiosOrders from '../../../axios-orders';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
@@ -79,8 +80,8 @@ class ContactData extends React.Component {
       formData[formElementIdentifier[0]] = formElementIdentifier[1].value;
     });
     const order = {
-      ingredients: this.props.ingredients,
-      price: this.props.price, // в реальном приложении цену надо считать на сервере
+      ingredients: this.props.ings,
+      price: this.props.totalPrice, // в реальном приложении цену надо считать на сервере
       orderData: formData,
     };
     axiosOrders.post('/orders.json', order)
@@ -197,14 +198,14 @@ class ContactData extends React.Component {
 
 
 ContactData.propTypes = {
-  ingredients: PropTypes.oneOfType([PropTypes.object]),
+  ings: PropTypes.oneOfType([PropTypes.object]).isRequired,
   history: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  price: PropTypes.number,
+  totalPrice: PropTypes.number.isRequired,
 };
 
-ContactData.defaultProps = {
-  ingredients: {},
-  price: 0,
-};
+const mapStateToProps = state => ({
+  ings: state.ingredients,
+  totalPrice: state.totalPrice,
+});
 
-export default ContactData;
+export default connect(mapStateToProps)(ContactData);
