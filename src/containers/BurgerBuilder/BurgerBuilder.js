@@ -16,7 +16,6 @@ class BurgerBuilder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      purchasable: false,
       purchasing: false,
       loading: false,
       loadingError: false,
@@ -37,38 +36,8 @@ class BurgerBuilder extends React.Component {
     const sum = Object.keys(ingredients)
       .map(ingred => ingredients[ingred])
       .reduce((accum, currentValue) => accum + currentValue, 0);
-    this.setState({ purchasable: sum > 0 });
+    return sum > 0;
   }
-
-  // addIngredientHandler = (type) => {
-  //   const oldCount = this.state.ingredients[type];
-  //   const updatedCount = oldCount + 1;
-  //   const updatedIngredients = {
-  //     ...this.state.ingredients,
-  //   };
-  //   updatedIngredients[type] = updatedCount;
-  //   const priceAddition = INGREDIENT_PRICES[type];
-  //   const oldPrice = this.state.totalPrice;
-  //   const newPrice = oldPrice + priceAddition;
-  //   this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
-  //   this.updatePurchaseState(updatedIngredients);
-  // }
-
-  // removeIngredientHandler = (type) => {
-  //   const oldCount = this.state.ingredients[type];
-  //   if (oldCount <= 0) { return; }
-
-  //   const updatedCount = oldCount - 1;
-  //   const updatedIngredients = {
-  //     ...this.state.ingredients,
-  //   };
-  //   updatedIngredients[type] = updatedCount;
-  //   const priceDeduction = INGREDIENT_PRICES[type];
-  //   const oldPrice = this.state.totalPrice;
-  //   const newPrice = oldPrice - priceDeduction;
-  //   this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
-  //   this.updatePurchaseState(updatedIngredients);
-  // }
 
   purchaseHandler = () => {
     this.setState({ purchasing: true });
@@ -111,7 +80,7 @@ class BurgerBuilder extends React.Component {
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
             disabled={disabledInfo}
-            purchasable={this.state.purchasable}
+            purchasable={this.updatePurchaseState(this.props.ings)}
             ordered={this.purchaseHandler}
             price={this.props.totalPrice}
           />
