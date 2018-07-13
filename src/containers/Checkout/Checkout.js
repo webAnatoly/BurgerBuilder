@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
@@ -19,19 +19,24 @@ class Checkout extends React.Component {
     this.props.history.replace('/checkout/contact-data');
   }
   render() {
-    return (
-      <div>
-        <CheckoutSummary
-          ingredients={this.props.ings}
-          checkoutCancelled={this.checkoutCancelledHandler}
-          checkoutContinued={this.checkoutContinuedHandler}
-        />
-        <Route
-          path={`${this.props.match.path}/contact-data`}
-          component={ContactData}
-        />
-      </div>
-    );
+    // Если объект this.props.ings пустой, то перенаправляюем на главную "страницу".
+    let summary = <Redirect to="/" />;
+    if (Object.keys(this.props.ings).length > 0) {
+      summary = (
+        <div>
+          <CheckoutSummary
+            ingredients={this.props.ings}
+            checkoutCancelled={this.checkoutCancelledHandler}
+            checkoutContinued={this.checkoutContinuedHandler}
+          />
+          <Route
+            path={`${this.props.match.path}/contact-data`}
+            component={ContactData}
+          />
+        </div>
+      );
+    }
+    return summary;
   }
 }
 
@@ -43,7 +48,7 @@ Checkout.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  ings: state.ingredients,
+  ings: state.burgerBuilder.ingredients,
 });
 
 /* С помощью функции connect() cвязываю компонент Checkout c redux.

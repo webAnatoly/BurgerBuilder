@@ -6,6 +6,8 @@ import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import s from './ContactData.css';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as orderActions from '../../../store/actions/index';
 
 const createBaseInputTemplate = (elementType, type, placeholder, validation) => {
   /* Вспомогательная функция, которая создает и возвращает объект,
@@ -56,7 +58,7 @@ class ContactData extends React.Component {
               { value: 'normal', displayValue: 'Обычная доставка' },
             ],
           },
-          value: '',
+          value: 'normal', // значение по умолчанию отправляемое на сервер
           valid: true,
           defaultValueForSelect: 'normal',
         },
@@ -64,15 +66,12 @@ class ContactData extends React.Component {
         просто добавив новое поле с конфигурацией. Например вот так:
         name2: { ...createBaseInputTemplate('input', 'text', 'Ваше имя2'), value: '' }, */
       },
-      loading: false,
       formIsValid: false, // на основе этого флага, разрешаем отправку формы
     };
   }
 
   orderHandler = (event) => {
     event.preventDefault(); // предотвращаем перезагрузку страницы при нажатии кнопки в форме
-
-    this.setState({ loading: true }); // активизируем показ спиннера
 
     // формируем данные для отправки на сервер
     const formData = {};
@@ -84,17 +83,7 @@ class ContactData extends React.Component {
       price: this.props.totalPrice, // в реальном приложении цену надо считать на сервере
       orderData: formData,
     };
-    axiosOrders.post('/orders.json', order)
-      .then(() => {
-        // перестаём показывать спиннер
-        this.setState({ loading: false });
-        // перенапрвляем пока что на главную страницу
-        this.props.history.push('/');
-      })
-      .catch((err) => {
-        console.log(err);
-        this.setState({ loading: false });
-      });
+    this.props.onOrderBurger(order); // диспатчим
   }
   checkValidity = (value, rules) => {
     let isValid = true;
@@ -147,6 +136,7 @@ class ContactData extends React.Component {
     this.setState({ orderForm: updatedOrderForm, formIsValid: isAllInputsValid });
   }
   render() {
+    console.log('this.props', this.props);
     const formElementsArray = [];
     // Заполняем массив объектами конфигурации на основе которых будут созданы инпуты в форме
     Object.entries(this.state.orderForm).forEach((elem) => {
@@ -184,7 +174,7 @@ class ContactData extends React.Component {
         </Button>
       </form>
     );
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
     return (
@@ -199,13 +189,24 @@ class ContactData extends React.Component {
 
 ContactData.propTypes = {
   ings: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  history: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  onOrderBurger: PropTypes.func.isRequired,
   totalPrice: PropTypes.number.isRequired,
+  loading: PropTypes.bool,
+};
+
+ContactData.defaultProps = {
+  loading: false,
 };
 
 const mapStateToProps = state => ({
-  ings: state.ingredients,
-  totalPrice: state.totalPrice,
+  ings: state.burgerBuilder.ingredients,
+  totalPrice: state.burgerBuilder.totalPrice,
+  loading: state.order.loading,
 });
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => ({
+  onOrderBurger: orderData => dispatch(orderActions.purchaseBurger(orderData)),
+});
+
+export default
+connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axiosOrders));
