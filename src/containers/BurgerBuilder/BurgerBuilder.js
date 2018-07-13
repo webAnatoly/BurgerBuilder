@@ -10,7 +10,7 @@ import Cross from '../../components/UI/Cross/Cross';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axiosOrders from '../../axios-orders';
-import * as burgerBuilderActions from '../../store/actions/index';
+import * as actions from '../../store/actions/index';
 
 class BurgerBuilder extends React.Component {
   constructor(props) {
@@ -114,10 +114,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onIngredientAdded: ingName => dispatch(burgerBuilderActions.addIngredient(ingName)),
-  onIngredientRemoved: ingName => dispatch(burgerBuilderActions.removeIngredient(ingName)),
-  onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients()),
-  onInitPurchase: () => dispatch(burgerBuilderActions.purchaseInit()),
+  onIngredientAdded: ingName => dispatch(actions.addIngredient(ingName)),
+  onIngredientRemoved: ingName => dispatch(actions.removeIngredient(ingName)),
+  onInitIngredients: () => dispatch(actions.initIngredients()),
+  onInitPurchase: () => dispatch(actions.purchaseInit()),
 });
 
 export default
