@@ -43,6 +43,7 @@ class BurgerBuilder extends React.Component {
     /* Теперь, когда использую Redux можно получать список ингредиентов из глобального store
     и соответственно отпала необходимость передавать список ингредиентов в строке URL.
     */
+    this.props.onInitPurchase();
     this.props.history.push('/checkout');
   }
 
@@ -103,6 +104,7 @@ BurgerBuilder.propTypes = {
   onInitIngredients: PropTypes.func.isRequired,
   totalPrice: PropTypes.number.isRequired,
   loadingError: PropTypes.bool.isRequired,
+  onInitPurchase: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -115,6 +117,7 @@ const mapDispatchToProps = dispatch => ({
   onIngredientAdded: ingName => dispatch(burgerBuilderActions.addIngredient(ingName)),
   onIngredientRemoved: ingName => dispatch(burgerBuilderActions.removeIngredient(ingName)),
   onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients()),
+  onInitPurchase: () => dispatch(burgerBuilderActions.purchaseInit()),
 });
 
 export default

@@ -22,8 +22,10 @@ class Checkout extends React.Component {
     // Если объект this.props.ings пустой, то перенаправляюем на главную "страницу".
     let summary = <Redirect to="/" />;
     if (Object.keys(this.props.ings).length > 0) {
+      const purchasedRedirect = this.props.purchased ? <Redirect to="/" /> : null;
       summary = (
         <div>
+          {purchasedRedirect}
           <CheckoutSummary
             ingredients={this.props.ings}
             checkoutCancelled={this.checkoutCancelledHandler}
@@ -45,10 +47,12 @@ Checkout.propTypes = {
   history: PropTypes.oneOfType([PropTypes.object]).isRequired,
   match: PropTypes.oneOfType([PropTypes.object]).isRequired,
   ings: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  purchased: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
   ings: state.burgerBuilder.ingredients,
+  purchased: state.order.purchased,
 });
 
 /* С помощью функции connect() cвязываю компонент Checkout c redux.
