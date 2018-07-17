@@ -136,7 +136,6 @@ class ContactData extends React.Component {
     this.setState({ orderForm: updatedOrderForm, formIsValid: isAllInputsValid });
   }
   render() {
-    console.log('this.props', this.props);
     const formElementsArray = [];
     // Заполняем массив объектами конфигурации на основе которых будут созданы инпуты в форме
     Object.entries(this.state.orderForm).forEach((elem) => {

@@ -4,6 +4,7 @@ const initialState = {
   orders: [],
   loading: false,
   purchased: false,
+  noOrders: true,
 };
 
 const reducer = (state = initialState, action) => {
@@ -28,6 +29,24 @@ const reducer = (state = initialState, action) => {
       };
     }
     case actionTypes.PURCHASE_BURGER_FAIL:
+      return {
+        ...state,
+        loading: false,
+      };
+    // экшены ответственные за получение всех orders с сервера
+    case actionTypes.FETCH_ORDERS_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case actionTypes.FETCH_ORDERS_SUCCESS:
+      return {
+        ...state,
+        orders: action.orders, // данные с сервера
+        loading: false,
+        noOrders: false,
+      };
+    case actionTypes.FETCH_ORDERS_FAIL:
       return {
         ...state,
         loading: false,

@@ -45,3 +45,47 @@ export const purchaseInit = () => (// редирект после отправк
     type: actionTypes.PURCHASE_INIT,
   }
 );
+
+/* Action Creators для получения всех orders с сервера */
+export const fetchOrdersSuccess = fetchedOrders => (
+  {
+    type: actionTypes.FETCH_ORDERS_SUCCESS,
+    orders: fetchedOrders,
+  }
+);
+
+export const fetchOrdersFail = err => (
+  {
+    type: actionTypes.FETCH_ORDERS_FAIL,
+    error: err,
+  }
+);
+
+export const fetchOrdersStart = () => (
+  {
+    type: actionTypes.FETCH_ORDERS_START,
+  }
+);
+
+export const fetchOrders = () => (
+  (dispatch) => {
+    dispatch(fetchOrdersStart());
+    axiosOrders.get('/orders.json')
+      .then((response) => {
+        // если response.data существует и он не пустой
+        if (response.data && Object.keys(response.data).length !== 0) {
+          const allFetchedOrders = Object.entries(response.data).map(order => (
+            { ...order[1], id: order[0] }
+          ));
+          dispatch(fetchOrdersSuccess(allFetchedOrders));
+        } else {
+          // если что-то пошло не так, просто диспатчим пустой массив.
+          dispatch(fetchOrdersSuccess([]));
+        }
+      })
+      .catch((err) => {
+        console.log('[!!! Catched error !!!]', err);
+        dispatch(fetchOrdersFail(err));
+      });
+  }
+);
