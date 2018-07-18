@@ -42,7 +42,7 @@ class Auth extends React.Component {
   render() {
     const formElementsArray = [];
     // Заполняем массив объектами конфигурации на основе которых будут созданы инпуты в форме
-    Object.entries(this.state.orderForm).forEach((elem) => {
+    Object.entries(this.state.controls).forEach((elem) => {
       formElementsArray.push({
         id: elem[0],
         ...elem[1],
