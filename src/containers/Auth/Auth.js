@@ -4,6 +4,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
+import s from './Auth.css';
 
 class Auth extends React.Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class Auth extends React.Component {
           elementType: 'input',
           elementConfig: {
             type: 'email',
-            placeholder: 'Mail Address',
+            placeholder: 'Емейл',
           },
           value: '',
           validation: {
@@ -28,7 +29,7 @@ class Auth extends React.Component {
           elementType: 'input',
           elementConfig: {
             type: 'password',
-            placeholder: 'Password',
+            placeholder: 'Пароль',
           },
           value: '',
           validation: {
@@ -65,7 +66,7 @@ class Auth extends React.Component {
       />
     ));
     return (
-      <div>
+      <div className={s.Auth}>
         <form>
           {form}
           <Button
