@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
+import updateObject from '../utility';
 
 const initialState = {
   ingredients: {},
@@ -15,27 +16,30 @@ const INGREDIENT_PRICES = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.ADD_INGREDIENT:
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          [action.ingredientName]: state.ingredients[action.ingredientName] + 1,
-        },
+    case actionTypes.ADD_INGREDIENT: {
+      const updatedIngredient = {
+        [action.ingredientName]: state.ingredients[action.ingredientName] + 1,
+      };
+      const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
+      const updatedState = {
+        ingredients: updatedIngredients,
         totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
       };
-    case actionTypes.REMOVE_INGREDIENT:
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          [action.ingredientName]: state.ingredients[action.ingredientName] - 1,
-        },
+      return updateObject(state, updatedState);
+    }
+    case actionTypes.REMOVE_INGREDIENT: {
+      const updatedIngredient = {
+        [action.ingredientName]: state.ingredients[action.ingredientName] - 1,
+      };
+      const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
+      const updatedState = {
+        ingredients: updatedIngredients,
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
       };
+      return updateObject(state, updatedState);
+    }
     case actionTypes.SET_INGREDIENTS:
-      return {
-        ...state,
+      return updateObject(state, {
         ingredients: {
           /* В action.ingredients будут попадать данные с сервера.
           Запрос на сервер будет делаться в Action Creatore, burgerBuilder -> initIngredients() */
@@ -46,12 +50,11 @@ const reducer = (state = initialState, action) => {
         },
         totalPrice: 0,
         loadingError: false,
-      };
+      });
     case actionTypes.FETCH_INGREDIENTS_FAILED:
-      return {
-        ...state,
+      return updateObject(state, {
         loadingError: true,
-      };
+      });
     default:
       return state;
   }
