@@ -1,3 +1,5 @@
+/* Компонет Auth.js это форма авторизации пользователя */
+
 import React from 'react';
 // import PropTypes from 'prop-types';
 import Input from '../../components/UI/Input/Input';
