@@ -5,6 +5,7 @@ import React from 'react';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import s from './Auth.css';
+import createBaseInputTemplate from '../utilities/createBaseInputTemplate';
 
 class Auth extends React.Component {
   constructor(props) {
@@ -12,32 +13,21 @@ class Auth extends React.Component {
     this.state = {
       controls: {
         email: {
-          elementType: 'input',
-          elementConfig: {
-            type: 'email',
-            placeholder: 'Емейл',
-          },
+          ...createBaseInputTemplate('input', 'email', 'Емейл'),
           value: '',
           validation: {
             required: true,
             isEmail: true,
           },
-          valid: false,
-          touched: false,
         },
         password: {
+          ...createBaseInputTemplate('input', 'password', 'Пароль'),
           elementType: 'input',
-          elementConfig: {
-            type: 'password',
-            placeholder: 'Пароль',
-          },
           value: '',
           validation: {
             required: true,
             minLength: 6,
           },
-          valid: false,
-          touched: false,
         },
       },
     };
