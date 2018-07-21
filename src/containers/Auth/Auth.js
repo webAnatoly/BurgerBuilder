@@ -1,11 +1,13 @@
 /* Компонет Auth.js это форма авторизации пользователя */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import s from './Auth.css';
 import createBaseInputTemplate from '../utilities/createBaseInputTemplate';
+import * as actions from '../../store/actions/index';
 
 class Auth extends React.Component {
   constructor(props) {
@@ -63,6 +65,11 @@ class Auth extends React.Component {
     this.setState({ controls: updatedControls });
   }
 
+  submitHandler = (event) => {
+    event.preventDefault();
+    this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value);
+  }
+
   render() {
     const formElementsArray = [];
     // Заполняем массив объектами конфигурации на основе которых будут созданы инпуты в форме
@@ -88,9 +95,10 @@ class Auth extends React.Component {
     ));
     return (
       <div className={s.Auth}>
-        <form>
+        <form onSubmit={this.submitHandler}>
           {form}
           <Button
+            type="submit"
             btnType="Success"
           >
             Подтвердить
@@ -102,12 +110,16 @@ class Auth extends React.Component {
 }
 
 
-// Auth.propTypes = {
-
-// };
+Auth.propTypes = {
+  onAuth: PropTypes.func.isRequired,
+};
 
 // Auth.defaultProps = {
 
 // };
 
-export default Auth;
+const mapDispatchToProps = dispatch => ({
+  onAuth: (email, password) => dispatch(actions.auth(email, password)),
+});
+
+export default connect(null, mapDispatchToProps)(Auth);
