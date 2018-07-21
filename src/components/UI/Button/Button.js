@@ -7,6 +7,7 @@ const Button = props => (
     disabled={props.disabled}
     className={[classes.Button, classes[props.btnType]].join(' ')}
     onClick={props.clicked}
+    type={props.type}
   >
     {props.children}
   </button>
@@ -17,6 +18,7 @@ Button.propTypes = {
   clicked: PropTypes.func,
   btnType: PropTypes.string,
   disabled: PropTypes.bool,
+  type: PropTypes.string.isRequired,
 };
 
 Button.defaultProps = {
