@@ -8,6 +8,16 @@
   box-sizing: border-box;
 }
 
+.AuthBottumsContainer {
+  box-sizing: border-box;
+  margin: auto;
+  margin-top: 20px;
+}
+.AuthBottumsContainer button{
+  display: block;
+  margin: auto;
+}
+
 @media (min-width: 600px) {
   .Auth {
     width: 500px;

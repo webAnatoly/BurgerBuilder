@@ -32,6 +32,7 @@ class Auth extends React.Component {
           },
         },
       },
+      isSignUp: true,
     };
   }
 
@@ -67,7 +68,15 @@ class Auth extends React.Component {
 
   submitHandler = (event) => {
     event.preventDefault();
-    this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value);
+    const email = this.state.controls.email.value;
+    const password = this.state.controls.password.value;
+    this.props.onAuth(email, password, this.state.isSignUp);
+  }
+
+  switchAuthModeHandler = () => {
+    this.setState(prevState => ({
+      isSignUp: !prevState.isSignUp,
+    }));
   }
 
   render() {
@@ -95,14 +104,24 @@ class Auth extends React.Component {
     ));
     return (
       <div className={s.Auth}>
+        <h3>{this.state.isSignUp ? 'Регистрация' : 'Вход'}</h3>
         <form onSubmit={this.submitHandler}>
           {form}
-          <Button
-            type="submit"
-            btnType="Success"
-          >
-            Подтвердить
-          </Button>
+          <div className={s.AuthBottumsContainer}>
+            <Button
+              type="submit"
+              btnType="Success"
+            >
+              {this.state.isSignUp ? 'ЗАРЕГИСТРИРОВАТЬСЯ' : 'ВОЙТИ'}
+            </Button>
+            <Button
+              type="button"
+              btnType="Danger"
+              clicked={this.switchAuthModeHandler}
+            >
+              Переключится в режим {this.state.isSignUp ? 'авторизации' : 'регистрации'}
+            </Button>
+          </div>
         </form>
       </div>
     );
@@ -119,7 +138,7 @@ Auth.propTypes = {
 // };
 
 const mapDispatchToProps = dispatch => ({
-  onAuth: (email, password) => dispatch(actions.auth(email, password)),
+  onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp)),
 });
 
 export default connect(null, mapDispatchToProps)(Auth);

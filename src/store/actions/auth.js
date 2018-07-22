@@ -19,9 +19,11 @@ export const authFail = error => ({
   error,
 });
 
-export const auth = (email, password) => (
+export const auth = (email, password, isSignUp) => (
   /* Возвращает функцию, которая в качестве аргумента принимает dispatch,
   это возможно благодоря подключенному middleware redux-thunk */
+  /* Если аргумент isSignUp === true значит происходит регистрация нового пользователя,
+  в ином случае происходит авторизация уже существующего пользоваетля */
   (dispatch) => {
     dispatch(authStart());
     // здесь будем авторизировать юзера
@@ -34,7 +36,11 @@ export const auth = (email, password) => (
       password,
       returnSecureToken: true,
     };
-    axios.post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDulYYUqaUNuVVCTPlrjoDYQSC4DBPuaQQ', authData)
+    let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDulYYUqaUNuVVCTPlrjoDYQSC4DBPuaQQ';
+    if (!isSignUp) {
+      url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDulYYUqaUNuVVCTPlrjoDYQSC4DBPuaQQ';
+    }
+    axios.post(url, authData)
       .then((response) => {
         console.log(response);
         dispatch(authSuccess(response.data));
