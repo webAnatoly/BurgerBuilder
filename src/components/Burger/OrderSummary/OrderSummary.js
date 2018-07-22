@@ -34,8 +34,8 @@ class OrderSummary extends React.PureComponent {
         </ul>
         <p><strong>Итого: {this.props.price.toFixed(2)} руб.</strong></p>
         <p>Продолжить?</p>
-        <Button btnType="Danger" clicked={this.props.purchaseCancelHandler} >ОТМЕНИТЬ</Button>
-        <Button btnType="Success" clicked={this.props.purchaseContinueHandler} >ПРОДОЛЖИТЬ</Button>
+        <Button type="button" btnType="Danger" clicked={this.props.purchaseCancelHandler} >ОТМЕНИТЬ</Button>
+        <Button type="button" btnType="Success" clicked={this.props.purchaseContinueHandler} >ПРОДОЛЖИТЬ</Button>
       </Aux>
     );
   }
