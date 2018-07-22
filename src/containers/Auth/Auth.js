@@ -103,9 +103,18 @@ class Auth extends React.Component {
         changed={event => this.inputChangedHandler(event, formElement.id)}
       />
     ));
+
     if (this.props.loading) { form = <Spinner />; }
+
+    let errorMessage = null;
+
+    if (this.props.error) {
+      errorMessage = (<p style={{ color: 'red' }}>{this.props.error.message}</p>);
+    }
+
     return (
       <div className={s.Auth}>
+        {errorMessage}
         <h3>{this.state.isSignUp ? 'Регистрация' : 'Вход'}</h3>
         <form onSubmit={this.submitHandler}>
           {form}
@@ -134,14 +143,16 @@ class Auth extends React.Component {
 Auth.propTypes = {
   onAuth: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  error: PropTypes.oneOfType([PropTypes.object]),
 };
 
-// Auth.defaultProps = {
-
-// };
+Auth.defaultProps = {
+  error: null,
+};
 
 const mapStateToProps = state => ({
   loading: state.auth.loading,
+  error: state.auth.error,
 });
 
 const mapDispatchToProps = dispatch => ({
