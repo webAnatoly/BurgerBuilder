@@ -11,7 +11,8 @@ export const authStart = () => ({
 
 export const authSuccess = authData => ({
   type: actionTypes.AUTH_SUCCESS,
-  authData,
+  token: authData.idToken,
+  userId: authData.localId,
 });
 
 export const authFail = error => ({
