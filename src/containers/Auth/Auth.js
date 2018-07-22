@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import s from './Auth.css';
 import createBaseInputTemplate from '../utilities/createBaseInputTemplate';
 import * as actions from '../../store/actions/index';
@@ -89,7 +90,7 @@ class Auth extends React.Component {
       });
     });
 
-    const form = formElementsArray.map(formElement => (
+    let form = formElementsArray.map(formElement => (
       <Input
         key={formElement.id}
         inputType={formElement.elementType}
@@ -102,6 +103,7 @@ class Auth extends React.Component {
         changed={event => this.inputChangedHandler(event, formElement.id)}
       />
     ));
+    if (this.props.loading) { form = <Spinner />; }
     return (
       <div className={s.Auth}>
         <h3>{this.state.isSignUp ? 'Регистрация' : 'Вход'}</h3>
@@ -131,14 +133,19 @@ class Auth extends React.Component {
 
 Auth.propTypes = {
   onAuth: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 // Auth.defaultProps = {
 
 // };
 
+const mapStateToProps = state => ({
+  loading: state.auth.loading,
+});
+
 const mapDispatchToProps = dispatch => ({
   onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp)),
 });
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
