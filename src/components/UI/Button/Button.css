@@ -10,7 +10,7 @@
   font-weight: bold;
 }
 
-.Button:first-of-type {
+.Button {
   margin-left: 0;
   padding-left: 0;
 }
