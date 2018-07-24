@@ -22,10 +22,11 @@ const purchaseBurgerStart = () => (
   }
 );
 
-export const purchaseBurger = orderData => (
+export const purchaseBurger = (orderData, token) => (
   (dispatch) => {
     dispatch(purchaseBurgerStart());
-    axiosOrders.post('/orders.json', orderData)
+    console.log('[TEST TOKEN]', token);
+    axiosOrders.post(`/orders.json?auth=${token}`, orderData)
       .then((response) => {
         dispatch(purchaseBurgerSuccess(response.data.name, orderData));
         // response.data.name это уникальный ключ, возвращаемый Firebase в случае успешной записи.
@@ -67,10 +68,10 @@ export const fetchOrdersStart = () => (
   }
 );
 
-export const fetchOrders = () => (
+export const fetchOrders = token => (
   (dispatch) => {
     dispatch(fetchOrdersStart());
-    axiosOrders.get('/orders.json')
+    axiosOrders.get(`/orders.json?auth=${token}`)
       .then((response) => {
         // если response.data существует и он не пустой
         if (response.data && Object.keys(response.data).length !== 0) {

@@ -9,7 +9,7 @@ import * as actions from '../../store/actions/index';
 
 class Orders extends React.Component {
   componentDidMount() {
-    this.props.onFetchOrders();
+    this.props.onFetchOrders(this.props.token);
   }
 
   render() {
@@ -44,23 +44,25 @@ Orders.propTypes = {
   onFetchOrders: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   arrayOfAllOrders: PropTypes.oneOfType([PropTypes.array]).isRequired,
+  token: PropTypes.string,
 };
 
-// Orders.defaultProps = {
-
-// };
+Orders.defaultProps = {
+  token: null,
+};
 
 const mapStateToProps = state => (
   {
     arrayOfAllOrders: state.order.orders,
     noOrders: state.order.noOrders,
     loading: state.order.loading,
+    token: state.auth.token, // токен доступа для авторизированного пользователя.
   }
 );
 
 const mapDispatchToProps = dispatch => (
   {
-    onFetchOrders: () => dispatch(actions.fetchOrders()),
+    onFetchOrders: token => dispatch(actions.fetchOrders(token)),
   }
 );
 
