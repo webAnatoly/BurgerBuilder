@@ -12,13 +12,14 @@ const Toolbar = props => (
       <Logo />
     </div>
     <nav className={s.DesktopOnly}>
-      <NavigationItems />
+      <NavigationItems isAuthenticated={props.isAuth} />
     </nav>
   </header>
 );
 
 Toolbar.propTypes = {
   sideDrawerToggleHandler: PropTypes.func,
+  isAuth: PropTypes.bool.isRequired,
 };
 
 Toolbar.defaultProps = {

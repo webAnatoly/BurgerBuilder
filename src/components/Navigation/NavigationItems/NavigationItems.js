@@ -1,20 +1,22 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import s from './NavigationItems.css';
 import NavigationItem from './NavigationItem/NavigationItem';
 
-const NavigationItems = () => (
+const NavigationItems = props => (
   <ul className={s.NavigationItems}>
     <NavigationItem link="/" exact>Наполнить бутерброд</NavigationItem>
     <NavigationItem link="/orders">Заказы</NavigationItem>
-    <NavigationItem link="/auth">Авторизация</NavigationItem>
+    {props.isAuthenticated
+      ? <NavigationItem link="/logout">Выйти</NavigationItem>
+      : <NavigationItem link="/auth">Авторизация</NavigationItem>}
     {/* <NavigationItem link="/checkout">Checkout</NavigationItem> */}
   </ul>
 );
 
-// NavigationItems.propTypes = {
-
-// };
+NavigationItems.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+};
 
 // NavigationItems.defaultProps = {
 
