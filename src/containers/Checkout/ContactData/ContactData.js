@@ -146,7 +146,7 @@ class ContactData extends React.Component {
             changed={event => this.inputChangedHandler(event, formElement.id)}
           />))}
         <Button
-          type="button"
+          type="submit"
           btnType="Success"
           disabled={!this.state.formIsValid} // disable is true if the form is not valid
         >
