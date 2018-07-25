@@ -20,9 +20,14 @@ export const authFail = error => ({
   error,
 });
 
-export const logout = () => ({
-  type: actionTypes.AUTH_LOGOUT,
-});
+export const logout = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('expirationDate');
+  localStorage.removeItem('userId');
+  return {
+    type: actionTypes.AUTH_LOGOUT,
+  };
+};
 
 export const checkAuthTimeout = expirationTime => (
   /* Асинхронный action creator, который на вход принимает время жизни токена
@@ -63,6 +68,10 @@ export const auth = (email, password, isSignUp) => (
     }
     axios.post(url, authData)
       .then((response) => {
+        const expirationDate = new Date(new Date().getTime() + (response.data.expiresIn * 1000));
+        localStorage.setItem('token', response.data.idToken);
+        localStorage.setItem('expirationDate', expirationDate);
+        localStorage.setItem('userId', response.data.localId);
         console.log(response);
         dispatch(authSuccess(response.data));
         dispatch(checkAuthTimeout(response.data.expiresIn));
@@ -78,3 +87,22 @@ export const setAuthRedirectPath = path => ({
   type: actionTypes.SET_AUTH_REDIRECT_PATH,
   path,
 });
+
+// Проверяет наличие токена доступа в браузерном localStorage и реализует соответствующею логику.
+export const authCheckState = () => (dispatch) => {
+  const token = localStorage.getItem('token');
+  if (!token) { // если токена вообще нет
+    dispatch(logout());
+  } else {
+    const expirationDate = new Date(localStorage.getItem('expirationDate'));
+    if (expirationDate > new Date()) { // если токен есть и его срок годности не истёк
+      const userId = localStorage.getItem('userId');
+      dispatch(authSuccess({ token, userId }));
+      // определяет сколько осталось жить токену в секундах и диспатчит checkAuthTimeout
+      const expirationTime = (expirationDate.getTime() - new Date().getTime()) / 1000;
+      dispatch(checkAuthTimeout(expirationTime));
+    } else { // если токен есть, но срок годности истек
+      dispatch(logout());
+    }
+  }
+};
