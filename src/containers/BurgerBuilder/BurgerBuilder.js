@@ -35,6 +35,12 @@ class BurgerBuilder extends React.Component {
     if (this.props.isAuthenticated) {
       this.setState({ purchasing: true });
     } else {
+      /* Если не зарегистрированный пользователя добавил ингредиенты и кликнул "сделать заказ",
+      путь устанавливаем '/checkout', и перенаправляем его на страницу авторизации.
+      Ингредиенты которые он добавил сохранены в редаксовском сторе, поэтому после его авторизации,
+      можно будет продолжит оформлять заказ.
+      И после того как он авторизируется он будет перенаправлен не на главную, а не /checkut */
+      this.props.onSetAuthRedirectPath('/checkout');
       this.props.history.push('/auth');
     }
   }
@@ -111,6 +117,7 @@ BurgerBuilder.propTypes = {
   loadingError: PropTypes.bool.isRequired,
   onInitPurchase: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
+  onSetAuthRedirectPath: PropTypes.func.isRequired,
 };
 
 BurgerBuilder.defaultProps = {
@@ -129,6 +136,7 @@ const mapDispatchToProps = dispatch => ({
   onIngredientRemoved: ingName => dispatch(actions.removeIngredient(ingName)),
   onInitIngredients: () => dispatch(actions.initIngredients()),
   onInitPurchase: () => dispatch(actions.purchaseInit()),
+  onSetAuthRedirectPath: path => dispatch(actions.setAuthRedirectPath(path)),
 });
 
 export default

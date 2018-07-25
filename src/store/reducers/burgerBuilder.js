@@ -5,6 +5,7 @@ const initialState = {
   ingredients: {},
   totalPrice: 0,
   loadingError: false,
+  building: false, // если начали строить бутерброд, то меняем на true
 };
 
 const INGREDIENT_PRICES = {
@@ -22,6 +23,7 @@ const addIngredient = (state, action) => {
   const updatedState = {
     ingredients: updatedIngredients,
     totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+    building: true,
   };
   return updateObject(state, updatedState);
 };
@@ -49,6 +51,7 @@ const setIngredients = (state, action) => (updateObject(state, {
   },
   totalPrice: 0,
   loadingError: false,
+  building: false,
 }));
 
 const fetchIngredientsFailed = state => (updateObject(state, { loading: true }));

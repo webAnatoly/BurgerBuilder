@@ -38,6 +38,14 @@ class Auth extends React.Component {
     };
   }
 
+  componentDidMount() {
+    if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
+      /* если в бутерброд ничего не добавляли, а путь не равен '/', то
+      устанавливаем путь равным '/' */
+      this.props.onSetAuthRedirectPath();
+    }
+  }
+
   checkValidity = (value, rules) => {
     let isValid = true;
 
@@ -115,8 +123,12 @@ class Auth extends React.Component {
 
     let authRedirect = null;
     if (this.props.isAuthenticated) {
-      // перенаправление на главную после успешной авторизации
-      authRedirect = <Redirect to="/" />;
+      /* Перенаправление после успешной авторизации.
+      Куда будет перенаправлен пользователь зависит от того, что он делал
+      до авторизации. Если ничего, то на главную, если добавлял ингредиенты,
+      то на /checkout.
+      */
+      authRedirect = <Redirect to={this.props.authRedirectPath} />;
     }
 
     return (
@@ -153,6 +165,9 @@ Auth.propTypes = {
   loading: PropTypes.bool.isRequired,
   error: PropTypes.oneOfType([PropTypes.object]),
   isAuthenticated: PropTypes.bool,
+  onSetAuthRedirectPath: PropTypes.func.isRequired,
+  buildingBurger: PropTypes.bool.isRequired,
+  authRedirectPath: PropTypes.string.isRequired,
 };
 
 Auth.defaultProps = {
@@ -164,10 +179,13 @@ const mapStateToProps = state => ({
   loading: state.auth.loading,
   error: state.auth.error,
   isAuthenticated: state.auth.token !== null,
+  buildingBurger: state.burgerBuilder.building,
+  authRedirectPath: state.auth.authRedirectPath,
 });
 
 const mapDispatchToProps = dispatch => ({
   onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp)),
+  onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);
