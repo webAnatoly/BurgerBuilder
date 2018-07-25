@@ -25,7 +25,6 @@ const purchaseBurgerStart = () => (
 export const purchaseBurger = (orderData, token) => (
   (dispatch) => {
     dispatch(purchaseBurgerStart());
-    console.log('[TEST TOKEN]', token);
     axiosOrders.post(`/orders.json?auth=${token}`, orderData)
       .then((response) => {
         dispatch(purchaseBurgerSuccess(response.data.name, orderData));
