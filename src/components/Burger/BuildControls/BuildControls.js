@@ -28,7 +28,7 @@ const buildControls = props => (
       disabled={!props.purchasable}
       onClick={props.ordered}
     >
-      СДЕЛАТЬ ЗАКАЗ
+      {props.isAuth ? 'СДЕЛАТЬ ЗАКАЗ' : 'ВОЙДИТЕ ЧТОБЫ СДЕЛАТЬ ЗАКАЗ'}
     </button>
   </div>
 );
@@ -38,6 +38,7 @@ buildControls.propTypes = {
   price: PropTypes.number,
   purchasable: PropTypes.bool,
   ordered: PropTypes.func,
+  isAuth: PropTypes.bool,
 };
 
 buildControls.defaultProps = {
@@ -45,6 +46,7 @@ buildControls.defaultProps = {
   price: 0,
   purchasable: true,
   ordered: () => false,
+  isAuth: null,
 };
 
 export default buildControls;
