@@ -9,7 +9,7 @@ import * as actions from '../../store/actions/index';
 
 class Orders extends React.Component {
   componentDidMount() {
-    this.props.onFetchOrders(this.props.token);
+    this.props.onFetchOrders(localStorage.getItem('token'));
   }
 
   render() {
@@ -44,11 +44,6 @@ Orders.propTypes = {
   onFetchOrders: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   arrayOfAllOrders: PropTypes.oneOfType([PropTypes.array]).isRequired,
-  token: PropTypes.string,
-};
-
-Orders.defaultProps = {
-  token: null,
 };
 
 const mapStateToProps = state => (
