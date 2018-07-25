@@ -67,10 +67,11 @@ export const fetchOrdersStart = () => (
   }
 );
 
-export const fetchOrders = token => (
+export const fetchOrders = (token, userId) => (
   (dispatch) => {
     dispatch(fetchOrdersStart());
-    axiosOrders.get(`/orders.json?auth=${token}`)
+    const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
+    axiosOrders.get(`/orders.json${queryParams}`)
       .then((response) => {
         // если response.data существует и он не пустой
         if (response.data && Object.keys(response.data).length !== 0) {

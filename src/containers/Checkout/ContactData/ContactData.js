@@ -62,6 +62,7 @@ class ContactData extends React.Component {
       ingredients: this.props.ings,
       price: this.props.totalPrice, // в реальном приложении цену надо считать на сервере
       orderData: formData,
+      userId: this.props.userId,
     };
     this.props.onOrderBurger(order, this.props.token); // диспатчим
   }
@@ -173,11 +174,13 @@ ContactData.propTypes = {
   totalPrice: PropTypes.number.isRequired,
   loading: PropTypes.bool,
   token: PropTypes.string,
+  userId: PropTypes.string,
 };
 
 ContactData.defaultProps = {
   loading: false,
   token: null,
+  userId: null,
 };
 
 const mapStateToProps = state => ({
@@ -185,6 +188,7 @@ const mapStateToProps = state => ({
   totalPrice: state.burgerBuilder.totalPrice,
   loading: state.order.loading,
   token: state.auth.token,
+  userId: state.auth.userId,
 });
 
 const mapDispatchToProps = dispatch => ({

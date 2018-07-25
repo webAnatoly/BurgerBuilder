@@ -9,7 +9,7 @@ import * as actions from '../../store/actions/index';
 
 class Orders extends React.Component {
   componentDidMount() {
-    this.props.onFetchOrders(localStorage.getItem('token'));
+    this.props.onFetchOrders(localStorage.getItem('token'), localStorage.getItem('userId'));
   }
 
   render() {
@@ -52,12 +52,13 @@ const mapStateToProps = state => (
     noOrders: state.order.noOrders,
     loading: state.order.loading,
     token: state.auth.token, // токен доступа для авторизированного пользователя.
+    userId: state.auth.userId,
   }
 );
 
 const mapDispatchToProps = dispatch => (
   {
-    onFetchOrders: token => dispatch(actions.fetchOrders(token)),
+    onFetchOrders: (token, userId) => dispatch(actions.fetchOrders(token, userId)),
   }
 );
 
