@@ -3,6 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
@@ -112,8 +113,15 @@ class Auth extends React.Component {
       errorMessage = (<p style={{ color: 'red' }}>{this.props.error.message}</p>);
     }
 
+    let authRedirect = null;
+    if (this.props.isAuthenticated) {
+      // перенаправление на главную после успешной авторизации
+      authRedirect = <Redirect to="/" />;
+    }
+
     return (
       <div className={s.Auth}>
+        {authRedirect}
         {errorMessage}
         <h3>{this.state.isSignUp ? 'Регистрация' : 'Вход'}</h3>
         <form onSubmit={this.submitHandler}>
@@ -144,15 +152,18 @@ Auth.propTypes = {
   onAuth: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.oneOfType([PropTypes.object]),
+  isAuthenticated: PropTypes.bool,
 };
 
 Auth.defaultProps = {
   error: null,
+  isAuthenticated: null,
 };
 
 const mapStateToProps = state => ({
   loading: state.auth.loading,
   error: state.auth.error,
+  isAuthenticated: state.auth.token !== null,
 });
 
 const mapDispatchToProps = dispatch => ({
