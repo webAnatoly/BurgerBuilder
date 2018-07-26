@@ -34,7 +34,7 @@ class Auth extends React.Component {
           },
         },
       },
-      isSignUp: true,
+      isSignUp: false,
     };
   }
 
