@@ -6,9 +6,6 @@ import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSumm
 import ContactData from './ContactData/ContactData';
 
 class Checkout extends React.Component {
-  // updateIngredients(ingredientsFromDidMount, price) {
-  //   this.setState({ ingredients: ingredientsFromDidMount, totalPrice: price });
-  // }
   checkoutCancelledHandler = () => {
     /* Так как этот компонент загружается через Route компонент, то в пропсы попадают
     объекты math, locacion and history соответсвенно можно их тут использовать.
