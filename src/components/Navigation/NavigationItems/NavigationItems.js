@@ -5,21 +5,22 @@ import NavigationItem from './NavigationItem/NavigationItem';
 
 const NavigationItems = props => (
   <ul className={s.NavigationItems}>
-    <NavigationItem link="/" exact>Наполнить бутерброд</NavigationItem>
-    {props.isAuthenticated ? <NavigationItem link="/orders">Заказы</NavigationItem> : null}
+    <NavigationItem link="/" exact closed={props.closed}>Наполнить бутерброд</NavigationItem>
+    {props.isAuthenticated ? <NavigationItem link="/orders" closed={props.closed}>Заказы</NavigationItem> : null}
     {props.isAuthenticated
-      ? <NavigationItem link="/logout">Выйти</NavigationItem>
-      : <NavigationItem link="/auth">Авторизация</NavigationItem>}
+      ? <NavigationItem link="/logout" closed={props.closed}>Выйти</NavigationItem>
+      : <NavigationItem link="/auth" closed={props.closed}>Авторизация</NavigationItem>}
     {/* <NavigationItem link="/checkout">Checkout</NavigationItem> */}
   </ul>
 );
 
 NavigationItems.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
+  closed: PropTypes.func, // закрытие бокового меню
 };
 
-// NavigationItems.defaultProps = {
-
-// };
+NavigationItems.defaultProps = {
+  closed: () => null,
+};
 
 export default NavigationItems;

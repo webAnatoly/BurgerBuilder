@@ -11,6 +11,7 @@ const NavigationItem = props => (
       to={props.link}
       activeClassName={s.active}
       exact={props.exact}
+      onClick={props.closed}
     >
       {props.children}
     </NavLink>
@@ -21,6 +22,7 @@ NavigationItem.propTypes = {
   children: PropTypes.node,
   link: PropTypes.string,
   exact: PropTypes.bool,
+  closed: PropTypes.func.isRequired,
 };
 
 NavigationItem.defaultProps = {
