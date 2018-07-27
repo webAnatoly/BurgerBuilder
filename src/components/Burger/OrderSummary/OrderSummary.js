@@ -43,16 +43,13 @@ class OrderSummary extends React.PureComponent {
 
 
 OrderSummary.propTypes = {
-  ingredients: PropTypes.oneOfType([PropTypes.object]),
-  purchaseCancelHandler: PropTypes.func,
-  purchaseContinueHandler: PropTypes.func,
+  ingredients: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  purchaseCancelHandler: PropTypes.func.isRequired,
+  purchaseContinueHandler: PropTypes.func.isRequired,
   price: PropTypes.number,
 };
 
 OrderSummary.defaultProps = {
-  ingredients: {},
-  purchaseCancelHandler: () => {},
-  purchaseContinueHandler: () => {},
   price: 0,
 };
 
