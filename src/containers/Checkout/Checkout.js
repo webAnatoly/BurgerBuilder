@@ -19,6 +19,13 @@ class Checkout extends React.Component {
     // Если объект this.props.ings пустой, то перенаправляюем на главную "страницу".
     let summary = <Redirect to="/" />;
     if (Object.keys(this.props.ings).length > 0) {
+      /* Если поле редактовского стора this.props.purchased === true это значит,
+      что данные о составе заказа и содержание формы успешно отправлены на сервер.
+      После успешной отправки данных, задиспатчится соответствующий экшен и
+      как следствие перезапустится функция render() этого компонента,
+      и так как purchased === true то произойдет редирект.
+      А вот в том компоненте куда произошел редирект, нужно purchased снова установить в false */
+      console.log('this.props.purchased', this.props.purchased);
       const purchasedRedirect = this.props.purchased ? <Redirect to="/" /> : null;
       summary = (
         <div>

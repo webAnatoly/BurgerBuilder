@@ -22,6 +22,7 @@ class BurgerBuilder extends React.Component {
 
   componentDidMount() {
     this.props.onInitIngredients();
+    this.props.onInitPurchase(); // диспатчим поле редакса purchased равным false
   }
 
   updatePurchaseState = (ingredients) => {
@@ -53,7 +54,7 @@ class BurgerBuilder extends React.Component {
     /* Теперь, когда использую Redux можно получать список ингредиентов из глобального store
     и соответственно отпала необходимость передавать список ингредиентов в строке URL.
     */
-    this.props.onInitPurchase();
+    this.props.onInitPurchase(); // диспатчим поле редакса purchased равным false
     this.props.history.push('/checkout');
   }
 
