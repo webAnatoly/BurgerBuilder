@@ -28,13 +28,14 @@ class App extends React.Component {
         <Redirect to="/" />
       </Switch>
     );
-
-    if (this.props.isAuthenticated) {
+    const isAuthenticated = localStorage.getItem('token') !== null;
+    if (isAuthenticated) {
       routes = (
         <Switch>
           <Route path="/checkout" component={Checkout} />
           <Route path="/orders" component={Orders} />
           <Route path="/logout" component={Logout} />
+          <Route path="/auth" component={Auth} />
           <Route path="/" component={BurgerBuilder} />
           <Redirect to="/" />
         </Switch>
@@ -50,17 +51,12 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.token !== null,
-});
-
 const mapDispatchToProps = dispatch => ({
   onTryAutoSignUp: () => dispatch(actions.authCheckState()),
 });
 
 App.propTypes = {
   onTryAutoSignUp: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default withRouter(connect(null, mapDispatchToProps)(App));
