@@ -9,6 +9,7 @@ import s from './ContactData.css';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as orderActions from '../../../store/actions/index';
 import createBaseInputTemplate from '../../utilities/createBaseInputTemplate';
+import updateObject from '../../../myLib/updateObject';
 
 class ContactData extends React.Component {
   constructor(props) {
@@ -84,20 +85,17 @@ class ContactData extends React.Component {
     return isValid;
   }
   inputChangedHandler = (event, inputIdentifier) => {
-    // копируем в новый объект orderForm
-    const updatedOrderForm = {
-      ...this.state.orderForm,
-    };
-    // копируем в новый объект состояния для текущего инпута
-    const updatedFormElement = {
-      ...updatedOrderForm[inputIdentifier],
-    };
-    // обновляем value для текущего инпута
-    updatedFormElement.value = event.target.value;
-    updatedFormElement.valid =
-      this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-    updatedFormElement.touched = true;
-    updatedOrderForm[inputIdentifier] = updatedFormElement;
+    const newValue = event.target.value;
+    // обновляем некоторые свойства для текущего инпута
+    const updatedFormElement = updateObject(this.state.orderForm[inputIdentifier], {
+      value: newValue, // обновляем value для текущего инпута
+      valid: this.checkValidity(newValue, this.state.orderForm[inputIdentifier].validation),
+      touched: true,
+    });
+    // копируем orderForm в новый объект и обновляем содержание текущего инпута
+    const updatedOrderForm = updateObject(this.state.orderForm, {
+      [inputIdentifier]: updatedFormElement,
+    });
 
     /* Пройти по всем элементам формы и проверить, Валидность введенных данных.
     Если хотябы одно не валидно, то formIsValid установить false

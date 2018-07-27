@@ -10,6 +10,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import s from './Auth.css';
 import createBaseInputTemplate from '../utilities/createBaseInputTemplate';
 import * as actions from '../../store/actions/index';
+import updateObject from '../../myLib/updateObject';
 
 class Auth extends React.Component {
   constructor(props) {
@@ -64,15 +65,13 @@ class Auth extends React.Component {
   }
 
   inputChangedHandler = (event, controlName) => {
-    const updatedControls = {
-      ...this.state.controls,
-      [controlName]: {
-        ...this.state.controls[controlName],
+    const updatedControls = updateObject(this.state.controls, {
+      [controlName]: updateObject(this.state.controls[controlName], {
         value: event.target.value,
         valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation),
         touched: true, // флаг для определения был ли ввод в поле от пользователя
-      },
-    };
+      }),
+    });
     this.setState({ controls: updatedControls });
   }
 
