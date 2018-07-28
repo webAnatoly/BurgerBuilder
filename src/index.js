@@ -14,9 +14,8 @@ import App from './App';
 // создаем глобальный store для всего приложения
 // и подключаем возможность использования redux-devtools
 /* eslint-disable no-underscore-dangle */
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 /* eslint-enable */
-
 const rootReduser = combineReducers({
   burgerBuilder: burgerBuilderReducer,
   order: orderReducer,
