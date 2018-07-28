@@ -25,7 +25,6 @@ class Checkout extends React.Component {
       как следствие перезапустится функция render() этого компонента,
       и так как purchased === true то произойдет редирект.
       А вот в том компоненте куда произошел редирект, нужно purchased снова установить в false */
-      console.log('this.props.purchased', this.props.purchased);
       const purchasedRedirect = this.props.purchased ? <Redirect to="/" /> : null;
       summary = (
         <div>
