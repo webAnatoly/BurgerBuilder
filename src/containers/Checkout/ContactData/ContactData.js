@@ -10,6 +10,7 @@ import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as orderActions from '../../../store/actions/index';
 import createBaseInputTemplate from '../../utilities/createBaseInputTemplate';
 import updateObject from '../../../share/updateObject';
+import checkValidity from '../../../share/checkValidity';
 
 class ContactData extends React.Component {
   constructor(props) {
@@ -67,29 +68,13 @@ class ContactData extends React.Component {
     };
     this.props.onOrderBurger(order, this.props.token); // диспатчим
   }
-  checkValidity = (value, rules) => {
-    let isValid = true;
 
-    if (rules) {
-      if (rules.required) {
-        isValid = value.trim() !== '' && isValid;
-      }
-      if (rules.minLength) {
-        isValid = value.length >= rules.minLength && isValid;
-      }
-      if (rules.maxLength) {
-        isValid = value.length <= rules.maxLength && isValid;
-      }
-    }
-
-    return isValid;
-  }
   inputChangedHandler = (event, inputIdentifier) => {
     const newValue = event.target.value;
     // обновляем некоторые свойства для текущего инпута
     const updatedFormElement = updateObject(this.state.orderForm[inputIdentifier], {
       value: newValue, // обновляем value для текущего инпута
-      valid: this.checkValidity(newValue, this.state.orderForm[inputIdentifier].validation),
+      valid: checkValidity(newValue, this.state.orderForm[inputIdentifier].validation),
       touched: true,
     });
     // копируем orderForm в новый объект и обновляем содержание текущего инпута
