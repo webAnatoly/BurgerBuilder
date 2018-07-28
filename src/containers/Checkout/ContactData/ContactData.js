@@ -9,7 +9,7 @@ import s from './ContactData.css';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as orderActions from '../../../store/actions/index';
 import createBaseInputTemplate from '../../utilities/createBaseInputTemplate';
-import updateObject from '../../../myLib/updateObject';
+import updateObject from '../../../share/updateObject';
 
 class ContactData extends React.Component {
   constructor(props) {

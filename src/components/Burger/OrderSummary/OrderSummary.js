@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import getUniqueKey from '../../../myLib/getUniqueRandomNumber';
+import getUniqueKey from '../../../share/getUniqueRandomNumber';
 import Aux from '../../../hoc/Aux/Aux';
 import Button from '../../UI/Button/Button';
 

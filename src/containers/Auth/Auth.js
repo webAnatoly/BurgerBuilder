@@ -10,7 +10,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import s from './Auth.css';
 import createBaseInputTemplate from '../utilities/createBaseInputTemplate';
 import * as actions from '../../store/actions/index';
-import updateObject from '../../myLib/updateObject';
+import updateObject from '../../share/updateObject';
 
 class Auth extends React.Component {
   constructor(props) {

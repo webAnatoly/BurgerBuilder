@@ -2,7 +2,7 @@ import React from 'react';
 import TypeProps from 'prop-types';
 import s from './Burger.css';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
-import getRandomUniqueKey from '../../myLib/getUniqueRandomNumber';
+import getRandomUniqueKey from '../../share/getUniqueRandomNumber';
 
 const burger = (props) => {
   let arrayIngredients = Object.keys(props.ingredients)

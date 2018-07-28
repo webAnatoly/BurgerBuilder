@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import s from './Order.css';
-import randomKey from '../../myLib/getUniqueRandomNumber';
+import randomKey from '../../share/getUniqueRandomNumber';
 import { lang } from '../../lang/ru/russian'; // Языковой пакет. В будущем планирую подгружать его динамически в зависимости от выбранного языка
 
 

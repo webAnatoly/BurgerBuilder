@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import s from './BuildControls.css';
 import BuildControl from './BuildControl/BuildControl';
-import getRandomUniqueKey from '../../../myLib/getUniqueRandomNumber';
+import getRandomUniqueKey from '../../../share/getUniqueRandomNumber';
 
 const controls = [
   { label: 'Салат', type: 'salad' },
