@@ -27,11 +27,19 @@ class ContactData extends React.Component {
           validation: { // rules of validation
             required: true,
             minLength: 3,
-            maxLength: 3,
+            maxLength: 6,
+            isNaturalNumber: true,
           },
         },
         country: { ...createBaseInputTemplate('input', 'text', 'Страна', true), value: '' },
-        email: { ...createBaseInputTemplate('input', 'email', 'Ваш емейл', true), value: '' },
+        email: {
+          ...createBaseInputTemplate('input', 'email', 'Ваш емейл', true),
+          value: '',
+          validation: { // rules of validation
+            required: true,
+            isEmail: true,
+          },
+        },
         deliveryMethod: {
           ...createBaseInputTemplate('select', '', '', false),
           elementConfig: {
