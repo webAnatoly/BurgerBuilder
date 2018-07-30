@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "webpack-dev-server --mode development",
     "build": "webpack --mode production"
   },
   "author": "Anatoly Demianov",
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.3",
