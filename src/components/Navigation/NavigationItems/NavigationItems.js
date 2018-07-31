@@ -10,7 +10,6 @@ const NavigationItems = props => (
     {props.isAuthenticated
       ? <NavigationItem link="/logout" closed={props.closed}>Выйти</NavigationItem>
       : <NavigationItem link="/auth" closed={props.closed}>Авторизация</NavigationItem>}
-    {/* <NavigationItem link="/checkout">Checkout</NavigationItem> */}
   </ul>
 );
 
