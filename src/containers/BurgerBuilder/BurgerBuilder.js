@@ -12,7 +12,9 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axiosOrders from '../../axios-orders';
 import * as actions from '../../store/actions/index';
 
-class BurgerBuilder extends React.Component {
+/* export здесь только для того, чтобы была возможность импортировать этот компонет
+в файле BurgerBuilder.test.js для целей тестирования */
+export class BurgerBuilder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
